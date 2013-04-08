@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>
+    <%= @page_title %>
+  </title>
+  <meta charset="utf-8">
+</head>
+<body>
+  <h1>
+  <%= @app_name %>
+  </h1>
+  <%= yield %>
+  <footer>
+    Copyright &copy; <%= Time.now.year %> <%= @app_name %>
+  </footer>
+</body>
+</html>
