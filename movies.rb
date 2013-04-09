@@ -2,6 +2,8 @@ require 'sinatra/base'
 # "continuous deployment", no need to restart server
 require 'sinatra/reloader'
 
+require 'pry'
+
 gem 'binding_of_caller'
 require 'binding_of_caller'
 require 'better_errors'
@@ -10,15 +12,6 @@ require 'open-uri'
 require 'uri'
 require 'json'
 
-# require 'pry'
-# # sinatra/reloader conflicts with later versions of sinatra
-# gem 'sinatra', '1.3.0'
-# require 'sinatra'
-
-# # require 'sinatra/support/numeric'
-# require 'sqlite3'
-
-# require 'time'
 
 class Movies < Sinatra::Base
 
@@ -46,25 +39,36 @@ class Movies < Sinatra::Base
 
   get '/search' do
     @q = params[:q]
+    @page_title += ": Search for '#{@q}'"
+
     @type = params[:button]
 
     file = open(OMDB_BASE + "?s=" + URI.escape(@q))
-    @api_result = JSON.load(file.read)
+    @results = JSON.load(file.read)["Search"] || []
 
-    if @api_result.keys.include?("Search")
-      @results = @api_result["Search"]
-    else
-      @results = []
+    if @results.size == 1 || (@type == "lucky" && @results.size > 0)
+      redirect "/movies?id=#{@results.first["imdbID"]}"
     end
+
+    # Old fashioned way of doing things...
+    # @api_result = JSON.load(file.read)
+    # if @api_result.keys.include?("Search")
+    #   @results = @api_result["Search"]
+    # else
+    #   @results = []
+    # end
 
     erb :results
   end
 
   get '/movies' do
     @id = params[:id]
-    file = open(OMDB_BASE + "?i=" + URI.escape(@id))
+    @q = params[:q] || ""
+
+    file = open(OMDB_BASE + "?i=" + URI.escape(@id) + "&tomatoes=true")
     @result = JSON.load(file.read)
 
+    @page_title += ": #{@result["Title"]}"
     @actors = @result["Actors"].split(", ")
     @directors = @result["Director"].split(", ")
 

@@ -1,7 +1,7 @@
 <h2><%= @result["Title"] %> (<%= @result["Year"] %>)</h2>
 
 <% if @result["Poster"] == "N/A" || @result["Poster"].nil? %>
-<p>No image found.</p>
+<img src="/images/noposter.png" alt="No poster available" title="No poster available">
 <% else %>
 <img src="<%= @result["Poster"] %>" alt="Movie poster for <%= @result["Title"] %>" title="Movie poster for <%= @result["Title"] %>">
 <% end %>
@@ -29,12 +29,20 @@
   <dd>
     <%= @result["Genre"] %>
   </dd>
-    <dt>
+  <dt>
     IMDB Rating
   </dt>
   <dd>
     <%= @result["imdbRating"] %> (<%= @result["imdbVotes"] %> votes)
   </dd>
+
+  <dt>
+    Rotten Tomatoes Rating
+  </dt>
+  <dd>
+    <%= @result["tomatoRating"] %>
+  </dd>
+
   <dt>
     Actor<%= @actors.length > 1 ? "s" : "" %>
   </dt>
@@ -57,3 +65,9 @@
   </dd>
   
 </dl>
+
+<% unless @q.empty? || @q.nil? %>
+<p><a href="/search?q=<%= URI.escape(@q) %>">
+Back to search results for <q><%= @q %></q>
+</a></p>
+<% end %>
