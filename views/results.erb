@@ -1,15 +1,5 @@
-<h2>
-  <% if @results.empty? %>
-    No search results found
-  <% else %>
-    Search results
+<ol class="results">
+  <% @results.each do |result| %>
+    <li><a href="/movies?id=<%= URI.escape(result["imdbID"]) %>&amp;q=<%= URI.escape(@q) %>"><%= result["Title"] %></a> (<%= result["Year"] %>)</li>
   <% end %>
-   for <q><%= @q %></q>
-</h2>
-<% if !@results.empty? %>
-  <ol>
-    <% @results.each do |result| %>
-      <li><a href="/movies?id=<%= URI.escape(result["imdbID"]) %>&amp;q=<%= URI.escape(@q) %>"><%= result["Title"] %></a> (<%= result["Year"] %>)</li>
-    <% end %>
-  </ol>
-<% end %>
+</ol>

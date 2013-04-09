@@ -5,14 +5,45 @@
     <%= @page_title %>
   </title>
   <meta charset="utf-8">
+  <!-- Locally Hosted Bootstrap -->
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+  <!-- End Bootstrap -->
+
+  <!-- Goog Fonts! -->
+  <link href='http://fonts.googleapis.com/css?family=Playfair+Display:400,700,900,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" type="text/css" href="/styles.css">
 </head>
 <body>
-  <h1>
-  <%= @app_name %>
-  </h1>
-  <%= yield %>
+  
+  <a href="/" class="nodecoration">
+    <header class="banner">
+      <h1>
+      <%= @app_name %>
+      </h1>
+      <!-- <div class="small-search">
+        <form action="/search" method="get" class="form-search">
+          <input type="search" class="input-medium search-query" name="q" placeholder="Search for a movie">
+        </form>
+      </div> -->
+    </header>
+  </a>
+  
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+
+        <%= yield %>
+
+      </div>
+    </div>
+  </div>
+  
   <footer>
     Copyright &copy; <%= Time.now.year %> <%= @app_name %>
   </footer>
+
 </body>
 </html>

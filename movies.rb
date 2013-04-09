@@ -26,7 +26,7 @@ class Movies < Sinatra::Base
 
   # Before is called once per request
   before do
-    @app_name = "Movies App"
+    @app_name = "Movistar*"
     #Sets the default page title
     @page_title = @app_name
   end
@@ -58,7 +58,7 @@ class Movies < Sinatra::Base
     #   @results = []
     # end
 
-    erb :results
+    erb :serp
   end
 
   get '/movies' do
@@ -71,6 +71,10 @@ class Movies < Sinatra::Base
     @page_title += ": #{@result["Title"]}"
     @actors = @result["Actors"].split(", ")
     @directors = @result["Director"].split(", ")
+
+    related = open(OMDB_BASE + "?s=" + URI.escape(@result["Title"]))
+    @results = JSON.load(related.read)["Search"] || []
+    @results.reject!{|movie| movie["Title"] == @result["Title"]}
 
     erb :detail
   end

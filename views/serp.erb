@@ -1,0 +1,17 @@
+<h2 class="search-results-title">
+  <% if @results.empty? %>
+    No search results found
+  <% else %>
+    Search results
+  <% end %>
+   for <q><%= @q %></q>
+</h2>
+<% if !@results.empty? %>
+
+<%= erb :results %>
+
+<% else %>
+
+<%= erb :home %>
+
+<% end %>

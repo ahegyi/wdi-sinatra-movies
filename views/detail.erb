@@ -1,73 +1,86 @@
-<h2><%= @result["Title"] %> (<%= @result["Year"] %>)</h2>
+<h2 class="movie-title"><%= @result["Title"] %> (<%= @result["Year"] %>)</h2>
 
-<% if @result["Poster"] == "N/A" || @result["Poster"].nil? %>
-<img src="/images/noposter.png" alt="No poster available" title="No poster available">
-<% else %>
-<img src="<%= @result["Poster"] %>" alt="Movie poster for <%= @result["Title"] %>" title="Movie poster for <%= @result["Title"] %>">
+
+<div class="movie-details">
+
+  <div class="poster">
+    <% if @result["Poster"] == "N/A" || @result["Poster"].nil? %>
+    <img src="/images/noposter.png" alt="No poster available" title="No poster available">
+    <% else %>
+    <img src="<%= @result["Poster"] %>" alt="Movie poster for <%= @result["Title"] %>" title="Movie poster for <%= @result["Title"] %>">
+    <% end %>
+  </div>
+
+  <div class="information">
+    <blockquote>
+      <p>
+      <%= @result["Plot"] == "N/A" ? "No description available." : @result["Plot"] %>
+      </p>
+    </blockquote>
+    <dl >
+      <dt>
+        Rating
+      </dt>
+      <dd>
+        <%= @result["Rated"] %>
+      </dd>
+      <dt>
+        Runtime
+      </dt>
+      <dd>
+        <%= @result["Runtime"] %>
+      </dd>
+      <dt>
+        Genre
+      </dt>
+      <dd>
+        <%= @result["Genre"] %>
+      </dd>
+      <dt>
+        IMDB Rating
+      </dt>
+      <dd>
+        <%= @result["imdbRating"] %> (<%= @result["imdbVotes"] %> votes)
+      </dd>
+
+      <dt>
+        Rotten Tomatoes Rating
+      </dt>
+      <dd>
+        <%= @result["tomatoRating"] %> (<%= @result["tomatoReviews"] %> reviews)
+      </dd>
+      <dt>
+        Actor<%= @actors.length > 1 ? "s" : "" %>
+      </dt>
+      <dd>
+        <ul class="unstyled">
+          <% @actors.each do |actor| %>
+            <li><%= actor %></li>
+          <% end %>
+        </ul>
+      </dd>
+      <dt>
+        Director<%= @directors.length > 1 ? "s" : "" %>
+      </dt>
+      <dd>
+        <ul class="unstyled">
+          <% @directors.each do |director| %>
+            <li><%= director %></li>
+          <% end %>
+        </ul>
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<!-- Show Related Results -->
+<% unless @results.empty? %>
+<h2 class="related-movies">Related movies</h2>
+<%= erb :results %>
 <% end %>
 
-<p>
-  <%= @result["Plot"] %>
-</p>
-
-<dl>
-  <dt>
-    Rating
-  </dt>
-  <dd>
-    <%= @result["Rated"] %>
-  </dd>
-  <dt>
-    Runtime
-  </dt>
-  <dd>
-    <%= @result["Runtime"] %>
-  </dd>
-  <dt>
-    Genre
-  </dt>
-  <dd>
-    <%= @result["Genre"] %>
-  </dd>
-  <dt>
-    IMDB Rating
-  </dt>
-  <dd>
-    <%= @result["imdbRating"] %> (<%= @result["imdbVotes"] %> votes)
-  </dd>
-
-  <dt>
-    Rotten Tomatoes Rating
-  </dt>
-  <dd>
-    <%= @result["tomatoRating"] %>
-  </dd>
-
-  <dt>
-    Actor<%= @actors.length > 1 ? "s" : "" %>
-  </dt>
-  <dd>
-    <ul>
-      <% @actors.each do |actor| %>
-        <li><%= actor %></li>
-      <% end %>
-    </ul>
-  </dd>
-  <dt>
-    Director<%= @directors.length > 1 ? "s" : "" %>
-  </dt>
-  <dd>
-    <ul>
-      <% @directors.each do |director| %>
-        <li><%= director %></li>
-      <% end %>
-    </ul>
-  </dd>
-  
-</dl>
-
 <% unless @q.empty? || @q.nil? %>
-<p><a href="/search?q=<%= URI.escape(@q) %>">
-Back to search results for <q><%= @q %></q>
-</a></p>
+<h4><a href="/search?q=<%= URI.escape(@q) %>">
+&laquo; Back to search results for <q><%= @q %></q>
+</a></h4>
 <% end %>
